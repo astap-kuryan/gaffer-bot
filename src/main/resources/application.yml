@@ -1,2 +1,2 @@
 telegram:
-  token:
+  token: ${TELEGRAM_BOT_TOKEN}
