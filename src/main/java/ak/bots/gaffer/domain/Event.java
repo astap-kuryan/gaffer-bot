@@ -28,7 +28,7 @@ public class Event {
   private MessageId messageId;
 
   @NotNull
-  private LocalDateTime when;
+  private String note;
 
   @Builder.Default
   private List<Registration> registrations = new ArrayList<>();
@@ -48,10 +48,10 @@ public class Event {
     }
   }
 
-  public boolean cancelRegistration(CancelRegistrationRequest request) {
+  public Optional<Registration> cancelRegistration(CancelRegistrationRequest request) {
     Optional<Registration> lastRegistration = findLastRegistration(request.getUser());
     lastRegistration.ifPresent(Registration::cancel);
-    return lastRegistration.isPresent();
+    return lastRegistration;
   }
 
   public Optional<Registration> findLastRegistration(User user) {

@@ -12,6 +12,6 @@ public class EventCreationRequest {
 
   private Long chatId;
   private User user;
-  private LocalDateTime when;
+  private String note;
 
 }

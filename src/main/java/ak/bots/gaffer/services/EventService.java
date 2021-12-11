@@ -9,6 +9,7 @@ import ak.bots.gaffer.domain.requests.EventCreationRequest;
 import ak.bots.gaffer.domain.requests.RegistrationRequest;
 import ak.bots.gaffer.factories.EventFactory;
 import java.util.List;
+import java.util.Optional;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -51,21 +52,18 @@ public class EventService {
     log.info("Cancelling registration");
 
     Event event = eventRepository.findEvent(request.getMessageId());
-    List<Registration> queueBeforeCancel = event.getQueue();
-    boolean registrationCancelled = event.cancelRegistration(request);
-    List<Registration> queueAfterCancel = event.getQueue();
-    if (registrationCancelled) {
+    List<Registration> registrations = event.getRegistrations();
+    List<Registration> queue = event.getQueue();
+    Optional<Registration> canceledRegistration = event.cancelRegistration(request);
+    if (canceledRegistration.isPresent()) {
       eventRepository.save(event);
     }
     telegramApiService.updateEventMessage(event);
-    if(queueChanged(queueBeforeCancel, queueAfterCancel)){
-      telegramApiService.sendNotification(event.getMessageId(), queueBeforeCancel.get(0).getUser());
+
+    if (registrations.contains(canceledRegistration) && !queue.isEmpty()) {
+      telegramApiService.sendNotification(event.getMessageId(), queue.get(0).getUser());
     }
-    return registrationCancelled;
+    return canceledRegistration.isPresent();
   }
 
-  private boolean queueChanged(List<Registration> queueBeforeCancel,
-      List<Registration> queueAfterCancel) {
-    return !queueBeforeCancel.isEmpty() && queueAfterCancel.size() < queueBeforeCancel.size();
-  }
 }

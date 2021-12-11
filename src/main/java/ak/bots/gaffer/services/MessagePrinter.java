@@ -4,6 +4,7 @@ import ak.bots.gaffer.domain.Event;
 import ak.bots.gaffer.domain.Registration;
 import ak.bots.gaffer.domain.requests.EventCreationRequest;
 import java.util.List;
+import javax.validation.constraints.NotNull;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -12,14 +13,20 @@ public class MessagePrinter {
   public String printMessage(Event event) {
     StringBuilder stringBuilder = new StringBuilder();
     stringBuilder.append(printHeader());
+    stringBuilder.append(printNotes(event.getNote()));
     stringBuilder.append(printRegistrations(event));
     stringBuilder.append(printQueue(event));
     return stringBuilder.toString();
   }
 
+  private String printNotes(String note) {
+    return note + "\n\n";
+  }
+
   public String printMessage(EventCreationRequest event) {
     StringBuilder stringBuilder = new StringBuilder();
     stringBuilder.append(printHeader());
+    stringBuilder.append(printNotes(event.getNote()));
     return stringBuilder.toString();
   }
 
@@ -57,7 +64,7 @@ public class MessagePrinter {
   }
 
   private String printHeader() {
-    return "<b>Регистрация на игру</b>\n\n";
+    return "<b>Регистрация на игру</b>\n";
   }
 
 }

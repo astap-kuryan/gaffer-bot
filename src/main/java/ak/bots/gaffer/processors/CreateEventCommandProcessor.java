@@ -22,7 +22,6 @@ public class CreateEventCommandProcessor extends CommandProcessor {
 
   private final EventService eventService;
   private final EventFactory eventFactory;
-  private final TelegramApiService telegramApiService;
 
   @Override
   protected void execute(Update update) {
