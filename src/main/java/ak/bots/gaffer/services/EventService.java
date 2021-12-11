@@ -52,17 +52,18 @@ public class EventService {
     log.info("Cancelling registration");
 
     Event event = eventRepository.findEvent(request.getMessageId());
-    List<Registration> registrations = event.getRegistrations();
+    List<Registration> participants = event.getParticipants();
     List<Registration> queue = event.getQueue();
     Optional<Registration> canceledRegistration = event.cancelRegistration(request);
     if (canceledRegistration.isPresent()) {
       eventRepository.save(event);
+      if (participants.contains(canceledRegistration.get()) && !queue.isEmpty()) {
+        telegramApiService.sendNotification(event.getMessageId(), queue.get(0).getUser());
+      }
+
     }
     telegramApiService.updateEventMessage(event);
 
-    if (registrations.contains(canceledRegistration) && !queue.isEmpty()) {
-      telegramApiService.sendNotification(event.getMessageId(), queue.get(0).getUser());
-    }
     return canceledRegistration.isPresent();
   }
 
