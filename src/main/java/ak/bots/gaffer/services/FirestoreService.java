@@ -82,7 +82,7 @@ public class FirestoreService implements EventRepository {
     Map<String, Object> data = new HashMap<>();
     data.put("chatId", event.getMessageId().getChatId());
     data.put("messageId", event.getMessageId().getMessageId());
-    data.put("when", event.getWhen());
+    data.put("note", event.getNote());
     return data;
   }
 

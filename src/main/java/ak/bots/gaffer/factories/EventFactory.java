@@ -6,7 +6,9 @@ import ak.bots.gaffer.domain.Registration;
 import ak.bots.gaffer.domain.requests.EventCreationRequest;
 import com.google.cloud.firestore.QueryDocumentSnapshot;
 import com.pengrad.telegrambot.model.Message;
+import com.pengrad.telegrambot.model.MessageEntity.Type;
 import java.time.LocalDateTime;
+import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -20,7 +22,15 @@ public class EventFactory {
   private final RegistrationFactory registrationFactory;
 
   public EventCreationRequest createEvent(Message message) {
-    return EventCreationRequest.builder().chatId(message.chat().id()).build();
+    return EventCreationRequest.builder().chatId(message.chat().id()).note(getNote(message))
+        .build();
+  }
+
+  private String getNote(Message message) {
+    Integer commandLength = Arrays.stream(message.entities())
+        .filter(messageEntity -> messageEntity.type() == Type.bot_command).findFirst().get()
+        .length();
+    return message.text().substring(commandLength).trim();
   }
 
   public Event createEvent(QueryDocumentSnapshot document,
@@ -35,11 +45,11 @@ public class EventFactory {
         .id(UUID.fromString(document.getId()))
         .messageId(new MessageId(chatId, messageId))
         .registrations(registrations)
-        .when(document.get("when", LocalDateTime.class))
+        .note(document.getString("note"))
         .build();
   }
 
   public Event createEvent(EventCreationRequest request, MessageId messageId) {
-    return Event.builder().messageId(messageId).when(request.getWhen()).build();
+    return Event.builder().messageId(messageId).note(request.getNote()).build();
   }
 }
