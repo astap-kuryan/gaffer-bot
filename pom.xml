@@ -12,6 +12,12 @@
 
   <name>gaffer-bot</name>
 
+  <properties>
+    <maven.compiler.target>11</maven.compiler.target>
+    <maven.compiler.source>11</maven.compiler.source>
+  </properties>
+
+
   <parent>
     <groupId>org.springframework.boot</groupId>
     <artifactId>spring-boot-starter-parent</artifactId>
@@ -142,12 +148,11 @@
         <artifactId>function-maven-plugin</artifactId>
         <version>0.9.1</version>
         <configuration>
+          <deploy.name>gaffer-bot-test</deploy.name>
+          <region></region>
           <functionTarget>org.springframework.cloud.function.adapter.gcp.GcfJarLauncher
           </functionTarget>
           <port>8080</port>
-          <environmentVariables>
-            <TELEGRAM_BOT_TOKEN>2143530917:AAFtSLkdPMvhImd8YMP6hcwKtS3x15nEo_4</TELEGRAM_BOT_TOKEN>
-          </environmentVariables>
         </configuration>
       </plugin>
       <plugin>

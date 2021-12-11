@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 public class UserFactory {
 
   User createUser(com.pengrad.telegrambot.model.User user) {
-    return User.builder().id(user.id()).username(user.username()).name(user.firstName())
+    return User.builder().id(user.id()).username(user.username()).firstName(user.firstName())
         .build();
   }
 
@@ -16,7 +16,8 @@ public class UserFactory {
     return User.builder()
         .id(queryDocumentSnapshot.get("userId", Long.class))
         .username(queryDocumentSnapshot.get("username", String.class))
-        .name(queryDocumentSnapshot.get("name", String.class))
+        .firstName(queryDocumentSnapshot.get("firstName", String.class))
+        .firstName(queryDocumentSnapshot.get("lastName", String.class))
         .build();
   }
 }

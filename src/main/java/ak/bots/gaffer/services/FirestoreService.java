@@ -90,7 +90,8 @@ public class FirestoreService implements EventRepository {
     Map<String, Object> data = new HashMap<>();
     data.put("userId", registration.getUser().getId());
     data.put("username", registration.getUser().getUsername());
-    data.put("name", registration.getUser().getName());
+    data.put("firstName", registration.getUser().getFirstName());
+    data.put("lastName", registration.getUser().getFirstName());
     data.put("registrationTime", registration.getRegistrationTime().getEpochSecond());
     data.put("registrationNumber", registration.getRegistrationNumber());
     data.put("cancelled", registration.isCancelled());

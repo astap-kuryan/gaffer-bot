@@ -1,7 +1,7 @@
 package ak.bots.gaffer;
 
 
-import ak.bots.gaffer.handlers.MessageHandler;
+import ak.bots.gaffer.services.MessageHandler;
 import com.pengrad.telegrambot.model.Update;
 import java.util.function.Consumer;
 import lombok.extern.slf4j.Slf4j;
