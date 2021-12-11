@@ -4,7 +4,6 @@ import ak.bots.gaffer.domain.Event;
 import ak.bots.gaffer.domain.Registration;
 import ak.bots.gaffer.domain.requests.EventCreationRequest;
 import java.util.List;
-import javax.validation.constraints.NotNull;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -20,7 +19,7 @@ public class MessagePrinter {
   }
 
   private String printNotes(String note) {
-    return note + "\n\n";
+    return note == null ? "\n" : note + "\n\n";
   }
 
   public String printMessage(EventCreationRequest event) {
