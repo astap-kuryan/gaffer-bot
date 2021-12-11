@@ -47,8 +47,7 @@ public class MessagePrinter {
     StringBuilder builder = new StringBuilder();
     for (int i = 0; i < registrationList.size(); i++) {
       Registration registration = registrationList.get(i);
-      builder.append(String.format("%d. @%s %s", i + 1, registration.getUser().getUsername(),
-          registration.getUser().getName()));
+      builder.append(String.format("%d. %s", i + 1, registration.getUser().getMention()));
       if (registration.getRegistrationNumber() != 0) {
         builder.append(String.format(" %d-й +", registration.getRegistrationNumber()));
       }
